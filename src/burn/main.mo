@@ -31,9 +31,10 @@ actor {
     // Like burn(), but stops and deletes the dummy actor instance
     public func burnBetter(amount : Nat) : async (Nat,Nat) {
         let pre = Cycles.balance();
-        // instantiate Burner canister
+        // instantiate Burner actor
         Cycles.add(amount);
         let burner = await Lib.Burner();
+        // delete its canister
         let p = Principal.fromActor(burner);
         ignore ic00.stop(p);
         ignore ic00.delete(p);
@@ -44,7 +45,7 @@ actor {
     // no actor class required
     public func burnBest(amount : Nat) : async (Nat,Nat) {
         let pre = Cycles.balance();
-        // create an empty cansiter (sans code)
+        // create an empty canister (sans code)
         Cycles.add(amount);
         let id = await ic00.create_canister();
         // delete it and its cycles
